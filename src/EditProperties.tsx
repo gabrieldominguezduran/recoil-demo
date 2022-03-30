@@ -1,11 +1,80 @@
 import {InputGroup, InputRightElement, NumberInput, NumberInputField, Text, VStack} from '@chakra-ui/react'
+import {selector, useRecoilState, useRecoilValue} from 'recoil'
+import {elementsState, selectedElementState, Element} from './components/Rectangle/Rectangle'
+
+const selectedElementProperties = selector<Element | undefined>({
+    key: 'selectedElementProperties',
+    get: ({get}) => {
+        const selectedElementId = get(selectedElementState)
+        if (selectedElementId == null) return
+
+        return get(elementsState(selectedElementId))
+    },
+
+    set: ({get, set}, newElement) => {
+        const selectedElementId = get(selectedElementState)
+        if (selectedElementId == null) return
+        if (!newElement) return
+
+        set(elementsState(selectedElementId), newElement)
+    },
+})
 
 export const EditProperties = () => {
+    const [element, setElement] = useRecoilState(selectedElementProperties)
+    if (!element) return null
+
+    const setPosition = (property: 'top' | 'left', value: number) => {
+        setElement({
+            ...element,
+            style: {
+                ...element.style,
+                position: {
+                    ...element.style.position,
+                    [property]: value,
+                },
+            },
+        })
+    }
+
+    const setSize = (property: 'width' | 'height', value: number) => {
+        setElement({
+            ...element,
+            style: {
+                ...element.style,
+                size: {
+                    ...element.style.size,
+                    [property]: value,
+                },
+            },
+        })
+    }
+
     return (
         <Card>
             <Section heading="Position">
-                <Property label="Top" value={1} onChange={(top) => {}} />
-                <Property label="Left" value={1} onChange={(left) => {}} />
+                <Property label="Top" value={element.style.position.top} onChange={(top) => setPosition('top', top)} />
+                <Property
+                    label="Left"
+                    value={element.style.position.left}
+                    onChange={(left) => {
+                        setPosition('left', left)
+                    }}
+                />
+            </Section>
+            <Section heading="Size">
+                <Property
+                    label="Width"
+                    value={element.style.size.width}
+                    onChange={(width) => setSize('width', width)}
+                />
+                <Property
+                    label="Height"
+                    value={element.style.size.height}
+                    onChange={(height) => {
+                        setSize('height', height)
+                    }}
+                />
             </Section>
         </Card>
     )
