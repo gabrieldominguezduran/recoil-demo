@@ -11,7 +11,7 @@ export type ElementStyle = {
 
 export type Element = {style: ElementStyle}
 
-export const elementsState = atomFamily<Element, number>({
+export const elementState = atomFamily<Element, number>({
     key: 'element',
     default: {
         style: {
@@ -27,7 +27,7 @@ export const selectedElementState = atom<number | null>({
 })
 export const Rectangle = ({id}: {id: number}) => {
     const [selectedElement, setSelectedElement] = useRecoilState(selectedElementState)
-    const [element, setElement] = useRecoilState(elementsState(id))
+    const [element, setElement] = useRecoilState(elementState(id))
 
     const selected = selectedElement === id
 

@@ -1,4 +1,4 @@
-import {atom, useRecoilValue, useSetRecoilState} from 'recoil'
+import {useRecoilValue, useSetRecoilState} from 'recoil'
 import {Rectangle, selectedElementState} from './components/Rectangle/Rectangle'
 import {EditProperties} from './EditProperties'
 import {PageContainer} from './PageContainer'
