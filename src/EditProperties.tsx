@@ -4,7 +4,7 @@ import {elementState, selectedElementState} from './components/Rectangle/Rectang
 import _ from 'lodash'
 import produce from 'immer'
 
-const editPropertyState = selectorFamily<number, {path: string; id: number}>({
+export const editProperty = selectorFamily<any, {path: string; id: number}>({
     key: 'editProperty',
     get:
         ({path, id}) =>
@@ -51,7 +51,7 @@ const Section: React.FC<{heading: string}> = ({heading, children}) => {
 }
 
 const Property = ({label, path, id}: {label: string; path: string; id: number}) => {
-    const [value, setValue] = useRecoilState(editPropertyState({path, id}))
+    const [value, setValue] = useRecoilState(editProperty({path, id}))
 
     return (
         <div>
